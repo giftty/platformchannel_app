@@ -5,21 +5,22 @@ import 'package:http/http.dart' as http;
 //import '../key.dart';
 // this notifier class will broadcast is fields and properties to any listener across the application
 class Auth with ChangeNotifier {
- final _channel = const MethodChannel('androidtest2/firstpot');
+
  String? resultValue='Waiting';
    var _count;
   
  Future connect() async{
-  var con = await   _channel.invokeMethod("connect");
+ var channel = const MethodChannel('androidtest2/firstpot');
+  var con = await   channel.invokeMethod("connect");
   print(con);
 }
 // the login method of the Auth class uses a platform invokeMethod call to get a platform data. it send the 
 //email and password provided to the backend platform with uses this parameter for processing and returns a result
   Future<void> login(String email, String password) async {
-   
+    final channel = const MethodChannel('androidtest2/firstpot');
    try {
     // login variable will house the result of the plaftform call
-      var login= await   _channel.invokeMethod('login',{"email":email,"password":password});
+      var login= await   channel.invokeMethod('login',{"email":email,"password":password});
       print(login);
      // passing the data to a auth class property that can be listened to
       resultValue=login;

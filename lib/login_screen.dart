@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Models/auth.dart';
+import 'successful_screen.dart';
+
 
 class LoginScreen extends StatelessWidget {
 
@@ -98,8 +101,8 @@ class LoginScreen extends StatelessWidget {
                           // print(emailController);
                           // print(passwordController);
                        // using the provider package to broadcast changes in variable from the Auth class
-                         // Provider.of<Auth>(context, listen: false).login(emailController.text, passwordController.text);
-                         // Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => SuccessfulScreen()));
+                          Provider.of<Auth>(context, listen: false).login(emailController.text, passwordController.text);
+                          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => SuccessfulScreen()));
                         },
                         child: Text('Login', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white,),),
                       ),
