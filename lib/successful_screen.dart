@@ -9,6 +9,7 @@ class SuccessfulScreen extends StatefulWidget {
 }
 
 class _SuccessfulScreenState extends State<SuccessfulScreen> {
+// this call listens for the event from the platform backend and returns a stream of data
    Stream count =Auth().streamCounterFromNative();
 
 
@@ -19,6 +20,7 @@ class _SuccessfulScreenState extends State<SuccessfulScreen> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+// this is a stream builder that will build a widget base on the current stream data
       body: StreamBuilder(
         stream:count,
         builder: (context, snapshot) {
