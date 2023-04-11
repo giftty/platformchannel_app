@@ -30,23 +30,25 @@ import Dreacotdeliverylibagent
     //   GeneratedPluginRegistrant.register(with: self)
       
       initDreacotdeliveryagent()
-      let controller = FlutterViewController(project: nil, nibName: nil, bundle: nil)
-       self.window?.rootViewController = controller 
-       let flutter_Mchannel = FlutterMethodChannel(name: "androidtest2/firstpot",
-                                              binaryMessenger: controller.binaryMessenger)
-      do {
+       do {
           try SingleInstance.shared.agent!.add(self, uniqueIdentifier: "\(self)")
       } catch {
           print(error.localizedDescription)
       }
+      let controller = FlutterViewController(project: nil, nibName: nil, bundle: nil)
+       self.window?.rootViewController = controller 
+       let flutter_Mchannel = FlutterMethodChannel(name: "androidtest2/firstpot",
+                                              binaryMessenger: controller.binaryMessenger)
+     
         flutter_Mchannel.setMethodCallHandler({
         [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
         // This method is invoked on the UI thread.
-        guard call.method == "login" else {
-            result(FlutterMethodNotImplemented)
-            return
-        }
-        self?.login(result: result)
+        if(call.method == "login"){
+          self?.login(result: result)
+        }else{
+          print("got to ios platform but error occurred")
+           result(FlutterMethodNotImplemented)
+        }     
         })
 
       GeneratedPluginRegistrant.register(with: self)
