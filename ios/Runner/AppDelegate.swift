@@ -1,13 +1,75 @@
 import UIKit
 import Flutter
+import Dreacotdeliverylibagent
 
 @UIApplicationMain
-@objc class AppDelegate: FlutterAppDelegate {
+@objc class AppDelegate: FlutterAppDelegate, DreacotdeliverylibagentConnectionListenerProtocol {
+    func onConnected() {
+
+    }
+    
+    func onConnectionEnded(_ willReconnect: Bool) {
+        
+    }
+    
+    func onConnectionStarted() {
+        
+    }
+    
+    
+    var agent: DreacotdeliverylibagentAgent?
+    class var shared: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    GeneratedPluginRegistrant.register(with: self)
+      GeneratedPluginRegistrant.register(with: self)
+      
+      initDreacotdeliveryagent()
+      
+      do {
+          try SingleInstance.shared.agent!.add(self, uniqueIdentifier: "\(self)")
+      } catch {
+          print(error.localizedDescription)
+      }
+
+      
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+    
+func initDreacotdeliveryagent() {
+    let appDataDir = NSHomeDirectory() + "/Documents/dreacotdeliverylibagent"
+    var initError: NSError?
+    
+    agent = DreacotdeliverylibagentNewDreacotDeliveryAgent(appDataDir, &initError)
+    
+    if initError != nil{
+        print(initError!)
+        return
+    }
+    SingleInstance.shared.agent = agent
+}
+
+func connect(vc: UIViewController?, completion: ((Bool) -> Void)? = nil) {
+    print("connect function")
+    DispatchQueue.global(qos: .background).async {
+        do {
+            if !SingleInstance.shared.agent!.isConnected() {
+                try SingleInstance.shared.agent?.connect("178.79.143.134:6061")
+                SingleInstance.connected = true
+                SingleInstance.authenticated = true
+            } else {
+                SingleInstance.connected = true
+            }
+        } catch {
+            DispatchQueue.main.async {
+                completion?(false)
+            }
+            print("cannot connect \(error)")
+        }
+    }
+}
 }

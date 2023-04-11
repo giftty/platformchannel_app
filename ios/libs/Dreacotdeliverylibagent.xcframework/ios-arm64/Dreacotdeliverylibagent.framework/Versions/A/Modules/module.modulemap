@@ -1,0 +1,8 @@
+framework module "Dreacotdeliverylibagent" {
+	header "ref.h"
+    header "Dreacotdeliverylibagent.objc.h"
+    header "Universe.objc.h"
+    header "Dreacotdeliverylibagent.h"
+
+    export *
+}
