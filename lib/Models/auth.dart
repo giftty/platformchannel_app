@@ -17,7 +17,7 @@ class Auth with ChangeNotifier {
 // the login method of the Auth class uses a platform invokeMethod call to get a platform data. it send the 
 //email and password provided to the backend platform with uses this parameter for processing and returns a result
   Future<void> login(String email, String password) async {
-    final channel = const MethodChannel('androidtest2/firstpot');
+    const channel =  MethodChannel('androidtest2/firstpot');
    try {
     // login variable will house the result of the plaftform call
       var login= await   channel.invokeMethod('login',{"email":email,"password":password});

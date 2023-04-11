@@ -29,12 +29,23 @@ import Dreacotdeliverylibagent
       GeneratedPluginRegistrant.register(with: self)
       
       initDreacotdeliveryagent()
-      
+       let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
+       let flutter_Mchannel = FlutterMethodChannel(name: "androidtest2/firstpot",
+                                              binaryMessenger: controller.binaryMessenger)
       do {
           try SingleInstance.shared.agent!.add(self, uniqueIdentifier: "\(self)")
       } catch {
           print(error.localizedDescription)
       }
+        flutter_Mchannel.setMethodCallHandler({
+        [weak self] (call: FlutterMethodCall, result: FlutterResult) -> Void in
+        // This method is invoked on the UI thread.
+        guard call.method == "login" else {
+            result(FlutterMethodNotImplemented)
+            return
+        }
+        self?.login(result: result)
+        })
 
       
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -72,4 +83,17 @@ func connect(vc: UIViewController?, completion: ((Bool) -> Void)? = nil) {
         }
     }
 }
+
+ func login() {
+        DispatchQueue.global(qos: .background).async {
+            do {
+                let user: DreacotdeliverylibagentUser = try (SingleInstance.shared.agent?.login("johndoe@gmail.com", password: "1234"))!
+                
+                self.showToast(message: user.email, font: .systemFont(ofSize: 12.0))
+                    
+            } catch {
+                print("\(error)")
+            }
+        }
+    }
 }
