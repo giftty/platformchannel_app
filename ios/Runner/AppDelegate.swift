@@ -84,12 +84,12 @@ func connect(vc: UIViewController?, completion: ((Bool) -> Void)? = nil) {
     }
 }
 
- func login() {
+ func login(result: FlutterResult) {
         DispatchQueue.global(qos: .background).async {
             do {
                 let user: DreacotdeliverylibagentUser = try (SingleInstance.shared.agent?.login("johndoe@gmail.com", password: "1234"))!
-                
-                self.showToast(message: user.email, font: .systemFont(ofSize: 12.0))
+                return result(user)
+                // self.showToast(message: user.email, font: .systemFont(ofSize: 12.0))
                     
             } catch {
                 print("\(error)")
