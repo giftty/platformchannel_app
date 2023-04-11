@@ -1,19 +1,20 @@
 import UIKit
+import SwiftUI
 import Flutter
 import Dreacotdeliverylibagent
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, DreacotdeliverylibagentConnectionListenerProtocol {
     func onConnected() {
-
+        print("connected")
     }
     
     func onConnectionEnded(_ willReconnect: Bool) {
-        
+        print("connection ended")
     }
     
     func onConnectionStarted() {
-        
+        print("connection started")
     }
     
     
@@ -26,10 +27,11 @@ import Dreacotdeliverylibagent
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-      GeneratedPluginRegistrant.register(with: self)
+    //   GeneratedPluginRegistrant.register(with: self)
       
       initDreacotdeliveryagent()
-       let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
+      let controller = FlutterViewController(project: nil, nibName: nil, bundle: nil)
+       self.window?.rootViewController = controller 
        let flutter_Mchannel = FlutterMethodChannel(name: "androidtest2/firstpot",
                                               binaryMessenger: controller.binaryMessenger)
       do {
@@ -38,16 +40,16 @@ import Dreacotdeliverylibagent
           print(error.localizedDescription)
       }
         flutter_Mchannel.setMethodCallHandler({
-        [weak self] (call: FlutterMethodCall, result: FlutterResult) -> Void in
+        [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
         // This method is invoked on the UI thread.
         guard call.method == "login" else {
             result(FlutterMethodNotImplemented)
             return
         }
-        self?.login(result:result)
+        self?.login(result: result)
         })
 
-      
+      GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
     
@@ -84,7 +86,7 @@ func connect(vc: UIViewController?, completion: ((Bool) -> Void)? = nil) {
     }
 }
 
- func login(result: FlutterResult) {
+ func login(result: @escaping FlutterResult) {
         DispatchQueue.global(qos: .background).async {
             do {
                 let user: DreacotdeliverylibagentUser = try (SingleInstance.shared.agent?.login("johndoe@gmail.com", password: "1234"))!
