@@ -37,13 +37,13 @@ import Dreacotdeliverylibagent
       }
       let controller = FlutterViewController(project: nil, nibName: nil, bundle: nil)
        self.window?.rootViewController = controller 
-       let flutter_Mchannel = FlutterMethodChannel(name: "androidtest2/firstpot",
+       let flutterchannel = FlutterMethodChannel(name:"androidtest2/firstpot",
                                               binaryMessenger: controller.binaryMessenger)
      
-        flutter_Mchannel.setMethodCallHandler({
+        flutterchannel.setMethodCallHandler({
         [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
         // This method is invoked on the UI thread.
-        if(call.method == "login"){
+        if call.method == "login" {
           self?.login(result: result)
         }else{
           print("got to ios platform but error occurred")
@@ -92,7 +92,7 @@ func connect(vc: UIViewController?, completion: ((Bool) -> Void)? = nil) {
         DispatchQueue.global(qos: .background).async {
             do {
                 let user: DreacotdeliverylibagentUser = try (SingleInstance.shared.agent?.login("johndoe@gmail.com", password: "1234"))!
-                return result(user)
+                return result(String(user))
                 // self.showToast(message: user.email, font: .systemFont(ofSize: 12.0))
                     
             } catch {

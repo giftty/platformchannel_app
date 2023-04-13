@@ -10,7 +10,7 @@ class SuccessfulScreen extends StatefulWidget {
 
 class _SuccessfulScreenState extends State<SuccessfulScreen> {
 // this call listens for the event from the platform backend and returns a stream of data
-   Stream count =Auth().streamCounterFromNative();
+  // Stream count =Auth().streamCounterFromNative();
 
 
 @override
@@ -21,19 +21,9 @@ class _SuccessfulScreenState extends State<SuccessfulScreen> {
   Widget build(BuildContext context) {
     return  Scaffold(
 // this is a stream builder that will build a widget base on the current stream data
-      body: StreamBuilder(
-        stream:count,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-           
-           var val=snapshot.data as List;
-          var colorInt=int.tryParse('0xff${val[0]}') ;
-          
-           var colo =Color(colorInt!);
-             //print(colo);
-            return AnimatedContainer(
+      body:  AnimatedContainer(
                duration: const Duration(seconds: 4),
-               color:colo ,
+              // color: ,
               child: Column(
                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -48,12 +38,42 @@ class _SuccessfulScreenState extends State<SuccessfulScreen> {
                   ),
                 ],
               ),
-            );
-          } else {
-            return CircularProgressIndicator();
-          }
-        },
-      ),
+            ),
+
+
+      //  StreamBuilder(
+      //   stream:count,
+      //   builder: (context, snapshot) {
+      //     if (snapshot.hasData) {
+           
+      //      var val=snapshot.data as List;
+      //     var colorInt=int.tryParse('0xff${val[0]}') ;
+          
+      //      var colo =Color(colorInt!);
+      //        //print(colo);
+      //       return AnimatedContainer(
+      //          duration: const Duration(seconds: 4),
+      //          color:colo ,
+      //         child: Column(
+      //          mainAxisAlignment: MainAxisAlignment.center,
+      //           children: [
+      //              const Center(
+      //               child: Text('Congratulation', style: TextStyle(fontSize: 24),),
+      //             ),
+      //             Center(
+      //               child: Text(
+      //               Provider.of<Auth>(context,listen: false).resultValue.toString(),
+      //                 style: Theme.of(context).textTheme.headline4,
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       );
+      //     } else {
+      //       return CircularProgressIndicator();
+      //     }
+      //   },
+      // ),
     );
   }
 }

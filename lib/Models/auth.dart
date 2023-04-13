@@ -10,14 +10,14 @@ class Auth with ChangeNotifier {
    var _count;
   
  Future connect() async{
- var channel = const MethodChannel('androidtest2/firstpot');
+  const channel = const MethodChannel('androidtest2/firstpot');
   var con = await   channel.invokeMethod("connect");
   print(con);
 }
 // the login method of the Auth class uses a platform invokeMethod call to get a platform data. it send the 
 //email and password provided to the backend platform with uses this parameter for processing and returns a result
   Future<void> login(String email, String password) async {
-    const channel =  MethodChannel('androidtest2/firstpot');
+    const channel =  MethodChannel("androidtest2/firstpot");
    try {
     // login variable will house the result of the plaftform call
       var login= await   channel.invokeMethod('login',{"email":email,"password":password});
@@ -27,17 +27,17 @@ class Auth with ChangeNotifier {
     }on PlatformException catch (e) {
       print("'${e}' An error occured");
     }
-
+    notifyListeners();
   }
 // this a an event trigger from the flutter end to the platform end this method listens for any data 
 // from the platform backend and returns the value.
 // in this test the stream is listening for a stream of intergers which later will be converted to color and used with an
 //animatedContainer to make a color change animation on the sucess page.
- Stream streamCounterFromNative() {
-   const counterChannel =
-   EventChannel('androidtest2/firstpot/events');
-   return counterChannel.receiveBroadcastStream().map((event) {
-     return event ;
-   });
- }
+//  Stream streamCounterFromNative() {
+//    const counterChannel =
+//    EventChannel('androidtest2/firstpot/events');
+//    return counterChannel.receiveBroadcastStream().map((event) {
+//      return event ;
+//    });
+//  }
 }
