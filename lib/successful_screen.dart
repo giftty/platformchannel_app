@@ -11,7 +11,7 @@ class SuccessfulScreen extends StatefulWidget {
 class _SuccessfulScreenState extends State<SuccessfulScreen> {
 // this call listens for the event from the platform backend and returns a stream of data
   // Stream count =Auth().streamCounterFromNative();
-
+ Stream count =Auth().streamCounterFromNative();
 
 @override
   void dispose() {
@@ -21,9 +21,25 @@ class _SuccessfulScreenState extends State<SuccessfulScreen> {
   Widget build(BuildContext context) {
     return  Scaffold(
 // this is a stream builder that will build a widget base on the current stream data
-      body:  AnimatedContainer(
+      body: StreamBuilder(
+        stream:count,
+        builder: (context, snapshot) {
+           var colorInt;
+          if (snapshot.hasData) {
+          if(snapshot.data.runtimeType ==int)
+          {
+               colorInt=int.tryParse('0xff${snapshot.data}') ;
+          }else{
+            var val=snapshot.data as List;
+           colorInt=int.tryParse('0xff${val[0]}') ;
+          }
+          
+          
+           var colo =Color(colorInt!);
+             //print(colo);
+            return AnimatedContainer(
                duration: const Duration(seconds: 4),
-              // color: ,
+               color:colo ,
               child: Column(
                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -38,7 +54,12 @@ class _SuccessfulScreenState extends State<SuccessfulScreen> {
                   ),
                 ],
               ),
-            ),
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        },
+      ),
 
 
       //  StreamBuilder(

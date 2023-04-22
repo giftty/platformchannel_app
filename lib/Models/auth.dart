@@ -8,7 +8,7 @@ class Auth with ChangeNotifier {
 
  String? resultValue='Waiting';
    var _count;
-  
+   var channel =  MethodChannel("androidtest2/firstpot");
  Future connect() async{
   const channel = const MethodChannel('androidtest2/firstpot');
   var con = await   channel.invokeMethod("connect");
@@ -17,7 +17,7 @@ class Auth with ChangeNotifier {
 // the login method of the Auth class uses a platform invokeMethod call to get a platform data. it send the 
 //email and password provided to the backend platform with uses this parameter for processing and returns a result
   Future<void> login(String email, String password) async {
-    const channel =  MethodChannel("androidtest2/firstpot");
+   
    try {
     // login variable will house the result of the plaftform call
       var login= await   channel.invokeMethod('login',{"email":email,"password":password});
@@ -33,11 +33,12 @@ class Auth with ChangeNotifier {
 // from the platform backend and returns the value.
 // in this test the stream is listening for a stream of intergers which later will be converted to color and used with an
 //animatedContainer to make a color change animation on the sucess page.
-//  Stream streamCounterFromNative() {
-//    const counterChannel =
-//    EventChannel('androidtest2/firstpot/events');
-//    return counterChannel.receiveBroadcastStream().map((event) {
-//      return event ;
-//    });
-//  }
+ Stream streamCounterFromNative() {
+   const counterChannel =
+   EventChannel('androidtest2/firstpot/events');
+   return counterChannel.receiveBroadcastStream().map((event) {
+    print(event);
+     return event ;
+   });
+ }
 }
